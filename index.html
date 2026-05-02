@@ -224,10 +224,9 @@
 
     /* ── About ── */
     .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
     }
 
     .about-text p {
@@ -618,6 +617,69 @@
       opacity: 1;
       transform: translateY(0);
     }
+    /* ── Research Interests ── */
+    .about-interests {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .interests-label {
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .interests-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .interests-group-name {
+      font-family: var(--mono-font);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .pill {
+      font-size: 0.82rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      border: 1px solid;
+      font-family: var(--body-font);
+      transition: opacity 0.2s;
+    }
+
+    .pill:hover { opacity: 0.75; }
+
+    .pill-blue {
+      background: rgba(79,163,255,0.08);
+      color: #7dc1ff;
+      border-color: rgba(79,163,255,0.25);
+    }
+
+    .pill-green {
+      background: rgba(52,211,153,0.08);
+      color: #34d399;
+      border-color: rgba(52,211,153,0.25);
+    }
+
+    .pill-amber {
+      background: rgba(251,191,36,0.08);
+      color: #fbbf24;
+      border-color: rgba(251,191,36,0.25);
+    }
+
   </style>
 </head>
 <body>
@@ -681,18 +743,34 @@
           My broader interests lie in <strong>the representational basis of perception and cognition</strong> — how symbolic, geometric, and neural representations can be integrated to model the selectivity and flexibility of biological intelligence.
         </p>
       </div>
-      <div class="about-stats">
-        <div class="stat-card">
-          <div class="stat-num">12+</div>
-          <div class="stat-label">Years of professional software development</div>
+      <div class="about-interests">
+        <div class="interests-label">Research Interests</div>
+        <div class="interests-group">
+          <span class="interests-group-name">Vision &amp; Attention</span>
+          <div class="pills-row">
+            <span class="pill pill-blue">Visual Attention</span>
+            <span class="pill pill-blue">Gaze Behaviour Modelling</span>
+            <span class="pill pill-blue">Scene Graph Generation</span>
+            <span class="pill pill-blue">Eye Tracking</span>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num">2</div>
-          <div class="stat-label"> conference publications</div>
+        <div class="interests-group">
+          <span class="interests-group-name">Neuroimaging</span>
+          <div class="pills-row">
+            <span class="pill pill-green">fMRI Decoding</span>
+            <span class="pill pill-green">MVPA</span>
+            <span class="pill pill-green">Experimental Design Evaluation</span>
+            <span class="pill pill-green">Brain Representations</span>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num">3</div>
-          <div class="stat-label">MSc degrees &amp; certifications</div>
+        <div class="interests-group">
+          <span class="interests-group-name">ML &amp; Representations</span>
+          <div class="pills-row">
+            <span class="pill pill-amber">Vision-Language Models</span>
+            <span class="pill pill-amber">Semantic Embedding</span>
+            <span class="pill pill-amber">Representation Learning</span>
+            <span class="pill pill-amber">Clustering</span>
+          </div>
         </div>
       </div>
     </div>
