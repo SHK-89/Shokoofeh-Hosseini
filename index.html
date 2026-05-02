@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shokoofehsadat Hosseini — Computational Neuroscience & AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --surface: #111620;
+      --surface2: #181f2c;
+      --border: rgba(100,160,255,0.12);
+      --accent: #4fa3ff;
+      --accent2: #a78bfa;
+      --accent3: #34d399;
+      --text: #e4eaf4;
+      --muted: #7a8ba8;
+      --heading-font: 'DM Serif Display', Georgia, serif;
+      --body-font: 'DM Sans', sans-serif;
+      --mono-font: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body-font);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── Neural network background ── */
+    #neural-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.18;
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(11, 15, 20, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono-font);
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+      font-family: var(--mono-font);
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 5rem;
+    }
+
+    .hero-inner {
+      max-width: 700px;
+    }
+
+    .hero-tag {
+      font-family: var(--mono-font);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: var(--heading-font);
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      color: var(--text);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-family: var(--mono-font);
+      text-decoration: none;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-weight: 500;
+    }
+
+    .btn-primary:hover { background: #7dc1ff; }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: transparent;
+    }
+
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Sections ── */
+    section {
+      padding: 6rem 0;
+    }
+
+    .section-label {
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 120px;
+    }
+
+    h2 {
+      font-family: var(--heading-font);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 2.5rem;
+      color: var(--text);
+    }
+
+    /* ── About ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .about-text p strong { color: var(--text); }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-num {
+      font-family: var(--heading-font);
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 3rem;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ── Experience ── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: slideIn 0.5s forwards;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.4rem;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .timeline-item:nth-child(2) { animation-delay: 0.1s; }
+    .timeline-item:nth-child(3) { animation-delay: 0.2s; }
+    .timeline-item:nth-child(4) { animation-delay: 0.3s; }
+    .timeline-item:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes slideIn {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .tl-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.4rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tl-role {
+      font-weight: 500;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .tl-date {
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: rgba(79,163,255,0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .tl-org {
+      font-size: 0.85rem;
+      color: var(--accent2);
+      margin-bottom: 0.5rem;
+    }
+
+    .tl-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* ── Skills ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .skill-group:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .skill-group-title {
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 1rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-size: 0.78rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--mono-font);
+      transition: all 0.2s;
+    }
+
+    .tag:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    /* ── Projects ── */
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .project-card:hover { border-color: rgba(100,160,255,0.3); transform: translateY(-4px); }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-name {
+      font-family: var(--heading-font);
+      font-size: 1.3rem;
+      color: var(--text);
+    }
+
+    .project-link {
+      font-family: var(--mono-font);
+      font-size: 0.78rem;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .project-link:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .stack-tag {
+      font-family: var(--mono-font);
+      font-size: 0.72rem;
+      color: var(--accent3);
+      background: rgba(52,211,153,0.08);
+      border: 1px solid rgba(52,211,153,0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+    }
+
+    /* ── Publications ── */
+    .pub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .pub-title {
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .pub-venue {
+      font-family: var(--mono-font);
+      font-size: 0.78rem;
+      color: var(--accent2);
+      margin-bottom: 0.5rem;
+    }
+
+    .pub-authors {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .pub-doi {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .pub-doi:hover { text-decoration: underline; }
+
+    /* ── Education ── */
+    .edu-grid {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .edu-degree {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .edu-school {
+      font-size: 0.85rem;
+      color: var(--accent2);
+      margin-top: 0.2rem;
+    }
+
+    .edu-year {
+      font-family: var(--mono-font);
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── Contact ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .contact-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.2s;
+      color: var(--text);
+    }
+
+    .contact-item:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(79,163,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; }
+
+    .contact-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: var(--mono-font);
+    }
+
+    .contact-value {
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-top: 0.1rem;
+      word-break: break-all;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      text-align: center;
+      font-family: var(--mono-font);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      h1 { font-size: 2.4rem; }
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="neural-canvas"></canvas>
+
+<nav>
+  <span class="nav-logo">shk.hosseini</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-tag">Computational Neuroscience · AI · Software Engineering</div>
+      <h1>Shokoofehsadat<br><em>Hosseini</em></h1>
+      <p class="hero-sub">
+        MSc Computational Neuroscience at BCCN Berlin. I bridge machine learning and brain science — building models that predict human perception, working with fMRI data, and shipping production-grade software.
+      </p>
+      <div class="hero-links">
+        <a href="https://github.com/SHK-89" class="btn btn-primary" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/hoseinishokoofeh" class="btn btn-ghost" target="_blank">LinkedIn</a>
+        <a href="mailto:shokoofehsadat.hosseini@bccn-berlin.de" class="btn btn-ghost">Email</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="container reveal">
+    <div class="section-label">01 — About</div>
+    <h2>Background</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a researcher and engineer with a rare combination of <strong>12+ years of industry software experience</strong> and a deep pivot into <strong>computational neuroscience and AI</strong>.
+        </p>
+        <p>
+          Currently pursuing my MSc at the <strong>Bernstein Center for Computational Neuroscience (BCCN)</strong> in Berlin, where I work on gaze prediction in dynamic scenes using large multimodal models.
+        </p>
+        <p>
+          My engineering roots span Java backend development, SaaS banking systems, and Agile leadership as a Senior Scrum Master. I bring a production mindset to research — building robust, reproducible pipelines.
+        </p>
+        <p>
+          I've also analyzed <strong>fMRI data</strong> using MVPA techniques (TDT, SAA, SPM) and presented at two international IEEE and data science conferences.
+        </p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-num">12+</div>
+          <div class="stat-label">Years of professional software development</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Peer-reviewed conference publications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">MSc degrees &amp; certifications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">30+</div>
+          <div class="stat-label">Developers coordinated as Scrum Master</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="container reveal">
+    <div class="section-label">02 — Experience</div>
+    <h2>Professional Journey</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="tl-header">
+          <span class="tl-role">Student Assistant — Gaze Behavior Modeling</span>
+          <span class="tl-date">Jul 2025 – Present</span>
+        </div>
+        <div class="tl-org">SCIoI (TU Berlin), Berlin</div>
+        <p class="tl-desc">Contributing to a computational model predicting human gaze in dynamic scenes (Project 57) using Vision Language Models and Large Multimodal Models.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-header">
+          <span class="tl-role">Lab Rotation — NeuroImaging Group</span>
+          <span class="tl-date">Sep 2025 – Nov 2025</span>
+        </div>
+        <div class="tl-org">Prof. John-Dylan Haynes' Lab, Berlin</div>
+        <p class="tl-desc">Analyzed fMRI data using the Same Analysis Approach (SAA) and The Decoding Toolbox (TDT) within SPM. Created a tutorial demonstrating these tools for the lab.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-header">
+          <span class="tl-role">Senior Scrum Master</span>
+          <span class="tl-date">Jun 2020 – Sep 2024</span>
+        </div>
+        <div class="tl-org">Dotin — ESB Project, Tehran</div>
+        <p class="tl-desc">Led agile delivery across 4+ teams (~30 people) in an Enterprise Service Bus project, collaborating with Product Owners to align technical delivery with customer needs.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-header">
+          <span class="tl-role">Senior Java Developer</span>
+          <span class="tl-date">Dec 2014 – Jun 2020</span>
+        </div>
+        <div class="tl-org">Dotin — CMS Project, Tehran</div>
+        <p class="tl-desc">Developed SaaS banking solutions (Card Management System). Specialized in synchronized programming, data access control, and open banking APIs.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-header">
+          <span class="tl-role">Java Developer</span>
+          <span class="tl-date">Jan 2012 – Dec 2014</span>
+        </div>
+        <div class="tl-org">PooyaCo — MCDS Project, Tehran</div>
+        <p class="tl-desc">Contributed to the Central Deposit System using REST/SOAP architecture in a cross-functional team.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="container reveal">
+    <div class="section-label">03 — Skills</div>
+    <h2>Technical Stack</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">Languages</div>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Java 8+</span>
+          <span class="tag">R</span>
+          <span class="tag">MATLAB</span>
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">ML / AI Libraries</div>
+        <div class="skill-tags">
+          <span class="tag">PyTorch</span>
+          <span class="tag">Scikit-Learn</span>
+          <span class="tag">Transformers</span>
+          <span class="tag">OpenCV</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">NumPy</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Neuro &amp; Imaging</div>
+        <div class="skill-tags">
+          <span class="tag">SPM</span>
+          <span class="tag">TDT</span>
+          <span class="tag">SAA</span>
+          <span class="tag">MVPA</span>
+          <span class="tag">fMRI Analysis</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">AI / Research Methods</div>
+        <div class="skill-tags">
+          <span class="tag">LMM</span>
+          <span class="tag">ViT</span>
+          <span class="tag">Deep Learning</span>
+          <span class="tag">Dimensionality Reduction</span>
+          <span class="tag">Clustering</span>
+          <span class="tag">Pattern Recognition</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Visualization</div>
+        <div class="skill-tags">
+          <span class="tag">Matplotlib</span>
+          <span class="tag">Seaborn</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Engineering &amp; Agile</div>
+        <div class="skill-tags">
+          <span class="tag">Scrum</span>
+          <span class="tag">REST / SOAP</span>
+          <span class="tag">SaaS</span>
+          <span class="tag">Open Banking</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="container reveal">
+    <div class="section-label">04 — Projects</div>
+    <h2>Selected Work</h2>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-name">ConceptGraph</div>
+        <a href="https://github.com/SHK-89/conceptGraph" class="project-link" target="_blank">↗ GitHub</a>
+      </div>
+      <p class="project-desc">
+        Exploration of graph-based conceptual representations — building structured semantic graphs connecting concepts and their relationships. Part of ongoing interest in combining symbolic and neural approaches to knowledge representation.
+      </p>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Graph Theory</span>
+        <span class="stack-tag">Knowledge Representation</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-name">Gaze Prediction in Dynamic Scenes</div>
+        <span class="project-link" style="cursor:default;color:var(--muted);">SCIoI / TU Berlin</span>
+      </div>
+      <p class="project-desc">
+        Developing a computational model (Project 57) to predict human gaze behavior in dynamic visual environments. Integrating Vision Language Models and Large Multimodal Models with psychophysical data.
+      </p>
+      <div class="project-stack">
+        <span class="stack-tag">PyTorch</span>
+        <span class="stack-tag">LMM</span>
+        <span class="stack-tag">VLM</span>
+        <span class="stack-tag">Eye Tracking</span>
+        <span class="stack-tag">Python</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-name">fMRI Decoding — NeuroImaging Rotation</div>
+        <span class="project-link" style="cursor:default;color:var(--muted);">Haynes Lab</span>
+      </div>
+      <p class="project-desc">
+        Analyzed fMRI datasets from an ongoing lab project. Applied multi-voxel pattern analysis using The Decoding Toolbox (TDT) and the Same Analysis Approach (SAA) within SPM. Produced a reproducible tutorial for the methodology.
+      </p>
+      <div class="project-stack">
+        <span class="stack-tag">MATLAB</span>
+        <span class="stack-tag">SPM</span>
+        <span class="stack-tag">TDT</span>
+        <span class="stack-tag">MVPA</span>
+        <span class="stack-tag">fMRI</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PUBLICATIONS ── -->
+<section id="publications">
+  <div class="container reveal">
+    <div class="section-label">05 — Publications</div>
+    <h2>Research</h2>
+
+    <div class="pub-card">
+      <div class="pub-title">Human Resource Allocation to the Credit Requirement Process: A Process Mining Approach</div>
+      <div class="pub-venue">IEEE — 13th International Conference on Information &amp; Knowledge Technology (IKT), Dec 2022</div>
+      <div class="pub-authors">Hosseini, S., Ebadati, O.M., Mehrabioun, M.</div>
+      <a href="https://doi.org/10.1109/IKT57960.2022.10039030" class="pub-doi" target="_blank">doi:10.1109/IKT57960.2022.10039030 ↗</a>
+    </div>
+
+    <div class="pub-card">
+      <div class="pub-title">Customer Satisfaction Prediction with Michigan-style Learning Classifier System</div>
+      <div class="pub-venue">International Conference on Contemporary Issues in Data Science (CiDaS), March 2019 — SN Applied Science</div>
+      <div class="pub-authors">Borna, K., Hosseini, S. &amp; Aghaei, M.A.M.</div>
+      <a href="https://doi.org/10.1007/s42452-019-1493-1" class="pub-doi" target="_blank">doi:10.1007/s42452-019-1493-1 ↗</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education">
+  <div class="container reveal">
+    <div class="section-label">06 — Education</div>
+    <h2>Academic Background</h2>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div>
+          <div class="edu-degree">MSc Computational Neuroscience</div>
+          <div class="edu-school">Bernstein Center for Computational Neuroscience (BCCN), Berlin</div>
+        </div>
+        <div class="edu-year">2024 – Present</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-degree">Data Science Certificate</div>
+          <div class="edu-school">Khatam University, Tehran — Statistics · Python · Deep Learning · Big Data</div>
+        </div>
+        <div class="edu-year">Nov 2022 – May 2023</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-degree">MSc Information Technology Management</div>
+          <div class="edu-school">Kharazmi University, Tehran</div>
+        </div>
+        <div class="edu-year">Feb 2019 – Nov 2022</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-degree">BSc Computer Science</div>
+          <div class="edu-school">Kharazmi University, Tehran</div>
+        </div>
+        <div class="edu-year">Sep 2007 – Sep 2011</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="container reveal">
+    <div class="section-label">07 — Contact</div>
+    <h2>Get In Touch</h2>
+    <div class="contact-grid">
+      <a href="mailto:shokoofehsadat.hosseini@bccn-berlin.de" class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">shokoofehsadat.hosseini<br>@bccn-berlin.de</div>
+        </div>
+      </a>
+      <a href="https://github.com/SHK-89" class="contact-item" target="_blank">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="var(--accent)" stroke="none"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013 0c2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-value">SHK-89</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/hoseinishokoofeh" class="contact-item" target="_blank">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="var(--accent)" stroke="none"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-value">hoseinishokoofeh</div>
+        </div>
+      </a>
+      <div class="contact-item" style="cursor:default;">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Location</div>
+          <div class="contact-value">Berlin, Germany</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>Built with ♥ · Shokoofehsadat Hosseini · Berlin 2025</p>
+  </div>
+</footer>
+
+<script>
+  // ── Neural canvas animation ──
+  const canvas = document.getElementById('neural-canvas');
+  const ctx = canvas.getContext('2d');
+  let nodes = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function initNodes() {
+    nodes = Array.from({ length: 55 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 2 + 1,
+    }));
+  }
+  initNodes();
+
+  function drawNeural() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+      if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = '#4fa3ff';
+      ctx.fill();
+
+      for (let j = i + 1; j < nodes.length; j++) {
+        const m = nodes[j];
+        const dx = n.x - m.x, dy = n.y - m.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 160) {
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(m.x, m.y);
+          ctx.strokeStyle = `rgba(79,163,255,${0.35 * (1 - dist / 160)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(drawNeural);
+  }
+  drawNeural();
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
