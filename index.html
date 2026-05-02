@@ -709,7 +709,11 @@
           <span class="tl-date">Jul 2025 – Present</span>
         </div>
         <div class="tl-org">SCIoI (TU Berlin), Berlin</div>
-        <p class="tl-desc">Contributing to a computational model predicting human gaze in dynamic scenes (Project 57) using Vision Language Models and Large Multimodal Models.</p>
+        <p class="tl-desc">Building a pipeline that links open-vocabulary scene graphs from dynamic videos with human gaze scanpaths (Project 57). Constructs frame-wise scene graphs via VLM, extracts foveation-based temporal relations from eye-tracking data, embeds predicates using GloVe, clusters them with K-medoids, and identifies which semantic relation families are preferentially selected by human visual attention.</p>
+        <a href="https://www.scienceofintelligence.de/people/shokoofehsadat-hosseini/" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;margin-top:0.75rem;font-family:var(--mono-font);font-size:0.75rem;color:var(--accent3);border:1px solid rgba(52,211,153,0.25);background:rgba(52,211,153,0.06);padding:0.3rem 0.75rem;border-radius:4px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(52,211,153,0.14)'" onmouseout="this.style.background='rgba(52,211,153,0.06)'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Verified · SCIoI Profile Page
+        </a>
       </div>
 
       <div class="timeline-item">
@@ -717,7 +721,7 @@
           <span class="tl-role">Lab Rotation — NeuroImaging Group</span>
           <span class="tl-date">Sep 2025 – Nov 2025</span>
         </div>
-        <div class="tl-org">NeuroImaging Group's Lab, Berlin</div>
+        <div class="tl-org">NeuroImaging Group's Lab, BCCN, Berlin</div>
         <p class="tl-desc">Analyzed fMRI data using the Same Analysis Approach (SAA) and The Decoding Toolbox (TDT) within SPM. Created a tutorial demonstrating these tools for the lab.</p>
       </div>
 
@@ -846,18 +850,49 @@
 
     <div class="project-card">
       <div class="project-top">
-        <div class="project-name">Gaze Prediction in Dynamic Scenes</div>
-        <span class="project-link" style="cursor:default;color:var(--muted);">SCIoI / TU Berlin</span>
+        <div class="project-name">Scene Graph Generation &amp; Human Visual Attention</div>
+        <a href="https://www.scienceofintelligence.de/research-projects/project_57/" class="project-link" target="_blank">↗ SCIoI Project 57</a>
       </div>
-      <p class="project-desc">
-        Developing a computational model (Project 57) to predict human gaze behavior in dynamic visual environments. Integrating Vision Language Models and Large Multimodal Models with psychophysical data.
+      <p class="project-desc" style="margin-bottom:1rem;">
+        <strong style="color:var(--text);">Research question:</strong> Which semantic relation clusters in an open-vocabulary scene graph are preferentially selected by human gaze in dynamic environments?
       </p>
+      <p class="project-desc" style="margin-bottom:1.2rem;">
+        This project investigates the link between structured scene representations and human visual attention. The full pipeline constructs open-vocabulary scene graphs from dynamic videos, extracts gaze-based temporal relations from eye-tracking scanpaths, and compares which semantic relation types humans preferentially attend to — distinguishing between relations that are merely frequent in the environment versus those actively selected by attention.
+      </p>
+
+      <!-- Pipeline steps -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:0.75rem;margin-bottom:1.2rem;">
+        <div style="background:rgba(79,163,255,0.06);border:1px solid rgba(79,163,255,0.15);border-radius:8px;padding:0.9rem 1rem;">
+          <div style="font-family:var(--mono-font);font-size:0.68rem;color:var(--accent);letter-spacing:0.1em;margin-bottom:0.4rem;">STEP 01</div>
+          <div style="font-size:0.85rem;font-weight:500;color:var(--text);margin-bottom:0.3rem;">Scene Graph Construction</div>
+          <div style="font-size:0.78rem;color:var(--muted);">Per-frame object detection, bounding boxes &amp; pairwise relation inference via VLM → JSON scene graphs</div>
+        </div>
+        <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15);border-radius:8px;padding:0.9rem 1rem;">
+          <div style="font-family:var(--mono-font);font-size:0.68rem;color:var(--accent2);letter-spacing:0.1em;margin-bottom:0.4rem;">STEP 02</div>
+          <div style="font-size:0.85rem;font-weight:500;color:var(--text);margin-bottom:0.3rem;">Temporal Relation Extraction</div>
+          <div style="font-size:0.78rem;color:var(--muted);">Foveation events from eye-tracking data → attended objects → scanpath-based relation sequences</div>
+        </div>
+        <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);border-radius:8px;padding:0.9rem 1rem;">
+          <div style="font-family:var(--mono-font);font-size:0.68rem;color:var(--accent3);letter-spacing:0.1em;margin-bottom:0.4rem;">STEP 03</div>
+          <div style="font-size:0.85rem;font-weight:500;color:var(--text);margin-bottom:0.3rem;">Embedding &amp; Clustering</div>
+          <div style="font-size:0.78rem;color:var(--muted);">GloVe predicate embeddings (300-dim) → cosine similarity → K-medoids semantic families</div>
+        </div>
+        <div style="background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.15);border-radius:8px;padding:0.9rem 1rem;">
+          <div style="font-family:var(--mono-font);font-size:0.68rem;color:#fbbf24;letter-spacing:0.1em;margin-bottom:0.4rem;">STEP 04</div>
+          <div style="font-size:0.85rem;font-weight:500;color:var(--text);margin-bottom:0.3rem;">Attention Analysis</div>
+          <div style="font-size:0.78rem;color:var(--muted);">Compare scene-wide relation distribution vs. gaze-selected relations to identify attentional preference</div>
+        </div>
+      </div>
+
       <div class="project-stack">
-        <span class="stack-tag">PyTorch</span>
-        <span class="stack-tag">LMM</span>
+        <span class="stack-tag">Python 3.13</span>
         <span class="stack-tag">VLM</span>
+        <span class="stack-tag">GloVe Embeddings</span>
+        <span class="stack-tag">K-medoids</span>
         <span class="stack-tag">Eye Tracking</span>
-        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Scene Graphs</span>
+        <span class="stack-tag">UVO Annotations</span>
+        <span class="stack-tag">SCIoI / TU Berlin</span>
       </div>
     </div>
 
@@ -982,6 +1017,15 @@
         <div>
           <div class="contact-label">Google Scholar</div>
           <div class="contact-value">View Publications</div>
+        </div>
+      </a>
+      <a href="https://www.scienceofintelligence.de/people/shokoofehsadat-hosseini/" class="contact-item" target="_blank">
+        <div class="contact-icon" style="background:rgba(52,211,153,0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">SCIoI — TU Berlin</div>
+          <div class="contact-value">Official Profile Page</div>
         </div>
       </a>
       <div class="contact-item" style="cursor:default;">
