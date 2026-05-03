@@ -979,18 +979,66 @@
 
     <div class="project-card">
       <div class="project-top">
-        <div class="project-name">fMRI Decoding — NeuroImaging Rotation</div>
-        <span class="project-link" style="cursor:default;color:var(--muted);">Haynes Lab</span>
+        <div class="project-name">fMRI Experimental Design Evaluation — NeuroImaging Rotation</div>
+        <span class="project-link" style="cursor:default;color:var(--muted);">BCCN Berlin</span>
       </div>
-      <p class="project-desc">
-        Analyzed fMRI datasets from an ongoing lab project. Applied multi-voxel pattern analysis using The Decoding Toolbox (TDT) and the Same Analysis Approach (SAA) within SPM. Produced a reproducible tutorial for the methodology.
+      <p class="project-desc" style="margin-bottom:0.75rem;">
+        <strong style="color:var(--text);">Goal:</strong> Evaluate the validity and decoding reliability of an ongoing lab experiment using real fMRI data.
+      </p>
+      <p class="project-desc" style="margin-bottom:0.75rem;">
+        As part of my lab rotation at the NeuroImaging Group (BCCN Berlin), I worked with real fMRI data from an active research project. I applied the <strong style="color:var(--text);">Same Analysis Approach (SAA)</strong> to assess whether the experimental design could support robust, reproducible decoding — a principled method that tests whether the same analytical pipeline succeeds on real data but not on permuted controls, directly probing design validity before drawing scientific conclusions.
+      </p>
+      <p class="project-desc" style="margin-bottom:1.2rem;">
+        Decoding was carried out using <strong style="color:var(--text);">The Decoding Toolbox (TDT)</strong> within the SPM framework, applying multivariate pattern analysis (MVPA) to identify brain regions whose activation patterns reliably distinguish experimental conditions. As a final deliverable, I produced a step-by-step tutorial covering the full SAA–TDT workflow to help the lab run reproducible analyses in future projects.
       </p>
       <div class="project-stack">
         <span class="stack-tag">MATLAB</span>
         <span class="stack-tag">SPM</span>
         <span class="stack-tag">TDT</span>
+        <span class="stack-tag">SAA</span>
         <span class="stack-tag">MVPA</span>
         <span class="stack-tag">fMRI</span>
+        <span class="stack-tag">Experimental Design</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-name">Customer Satisfaction Prediction with Michigan-Style LCS</div>
+        <a href="https://doi.org/10.1007/s42452-019-1493-1" class="project-link" target="_blank">↗ Published Paper</a>
+      </div>
+      <p class="project-desc" style="margin-bottom:0.75rem;">
+        <strong style="color:var(--text);">Problem:</strong> Predicting bank customer satisfaction from a high-dimensional, severely class-imbalanced dataset (96% satisfied vs. 4% unsatisfied) using an interpretable rule-based learning system.
+      </p>
+      <p class="project-desc" style="margin-bottom:0.75rem;">
+        Applied a <strong style="color:var(--text);">Michigan-style Learning Classifier System (LCS)</strong> — a genetic-based machine learning approach that evolves a population of IF:THEN rules — to classify Santander Bank customers. The raw dataset contained 369 anonymized features across 147,392 records. A rigorous preprocessing pipeline handled class imbalance via SMOTE, removed constant and highly-correlated features (threshold: 0.85), and converted all attributes to binary format for rule-based processing.
+      </p>
+      <p class="project-desc" style="margin-bottom:1.2rem;">
+        Three rule compaction strategies were benchmarked — QRC, QRF, and PDRC — using 5-fold cross-validation. QRC achieved the highest accuracy (88.4%), while QRF was the fastest. Attribute Tracking and Feedback mechanisms further identified the four most predictive features driving customer dissatisfaction.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-bottom:1.2rem;">
+        <div style="background:rgba(79,163,255,0.06);border:1px solid rgba(79,163,255,0.15);border-radius:8px;padding:0.75rem;text-align:center;">
+          <div style="font-family:var(--mono-font);font-size:1.1rem;color:var(--accent);font-weight:500;">88.4%</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;">Best test accuracy (QRC)</div>
+        </div>
+        <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15);border-radius:8px;padding:0.75rem;text-align:center;">
+          <div style="font-family:var(--mono-font);font-size:1.1rem;color:var(--accent2);font-weight:500;">147K</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;">Records after SMOTE balancing</div>
+        </div>
+        <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);border-radius:8px;padding:0.75rem;text-align:center;">
+          <div style="font-family:var(--mono-font);font-size:1.1rem;color:var(--accent3);font-weight:500;">3</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;">Rule compaction strategies compared</div>
+        </div>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">R</span>
+        <span class="stack-tag">Michigan-Style LCS</span>
+        <span class="stack-tag">ExSTraCS</span>
+        <span class="stack-tag">SMOTE</span>
+        <span class="stack-tag">Rule Compaction</span>
+        <span class="stack-tag">GBML</span>
+        <span class="stack-tag">5-Fold CV</span>
+        <span class="stack-tag">CiDaS 2019</span>
       </div>
     </div>
 
